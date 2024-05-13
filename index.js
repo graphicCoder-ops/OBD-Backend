@@ -15,9 +15,6 @@ mongoose.connect(process.env.DB_CONNECTION_URL, {
 .then(() => console.log('Connected to MongoDB'))
 .catch(err => console.error('Failed to connect to MongoDB', err));
 
-
-
-
 // by default express uses xml weird am i right??
 app.use(express.json());
 
