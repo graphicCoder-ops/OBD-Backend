@@ -26,5 +26,5 @@ app.use('/auth',authservice);
 
 // Starting server at port 6969
 app.listen(process.env.PORT,()=>{
-    console.log("Server is listening at http://localhost:6969")
+    console.log("Server is listening at http://localhost:" + process.env.PORT);
 });
