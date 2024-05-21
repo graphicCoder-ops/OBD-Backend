@@ -32,4 +32,26 @@ router.post('/register', async (req, res) => {
     }
 });
 
+router.put('/change-password', async (req, res) => {
+    try {
+        const { username, newPassword } = req.body;
+        const user = await User.findOne({ username});
+
+        if (!user) {
+            return res.status(404).send('User not found');
+        }
+        else{
+            user.password = newPassword;
+            await user.save();
+            res.status(200).send('Password changed successfully!');
+        }
+
+        
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Error changing password');
+    }
+});
+
+
 module.exports = router;
