@@ -1,8 +1,14 @@
 const express = require("express");
 const authservice =require("./routes/auth.js");
-const app = express();
+// by default my mobile application is been blocked by this API
+const cors =  require('cors');
 const dotenv =require("dotenv");
 const mongoose= require("mongoose");
+
+const app = express();
+
+// Enable All CORS Requests
+app.use(cors());
 
 // importing environment variables this is merely for simulating or virtual env
 dotenv.config();
