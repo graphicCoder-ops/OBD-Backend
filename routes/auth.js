@@ -34,11 +34,11 @@ router.post('/register', async (req, res) => {
 
 router.put('/change-password', async (req, res) => {
     try {
-        const { username, newPassword } = req.body;
-        const user = await User.findOne({ username});
+        const { username, newPassword , oldPassword } = req.body;
+        const user = await User.findOne({ username , oldPassword});
 
         if (!user) {
-            return res.status(404).send('User not found');
+            return res.status(401).send('User not found');
         }
         else{
             user.password = newPassword;
