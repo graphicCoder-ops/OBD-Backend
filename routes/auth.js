@@ -35,8 +35,8 @@ router.post('/register', async (req, res) => {
 router.put('/change-password', async (req, res) => {
     try {
         const { username, newPassword , oldPassword } = req.body;
-        const user = await User.findOne({ username:username , oldPassword:oldPassword});
-
+        const user = await User.findOne({ username:username, password:oldPassword});
+        console.log(user);
         if (!user) {
             return res.status(401).send('User not found');
         }
