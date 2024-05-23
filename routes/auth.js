@@ -3,8 +3,9 @@ const router = app.Router();
 const User = require('../models/user');
 
 router.post('/login', async (req, res) => {
+    const {username,password} = req.body;
     try {
-        const activeUser = await User.findOne({ username: req.body.username, password: req.body.password });
+        const activeUser = await User.findOne({ username: username.toLowerCase(), password: password });
         if (activeUser) {
             res.status(200).send("Login Successfully!," + activeUser.username);
         } else {
@@ -16,11 +17,12 @@ router.post('/login', async (req, res) => {
 });
 
 router.post('/register', async (req, res) => {
-    const existingUser = await User.findOne({ username: req.body.username });
-
+    const {username,password} = req.body;
+    const existingUser = await User.findOne({ username: username});
+    
     if (!existingUser) {
         try {
-            const newUser = new User({ username: req.body.username, password: req.body.password });
+            const newUser = new User({ username: username.toLowerCase(), password: password });
             await newUser.save();
             res.status(200).send('Registered, '+ newUser.username);
         } catch (error) {
@@ -33,10 +35,9 @@ router.post('/register', async (req, res) => {
 });
 
 router.put('/change-password', async (req, res) => {
+    const { username, newPassword , oldPassword } = req.body;
     try {
-        const { username, newPassword , oldPassword } = req.body;
-        const user = await User.findOne({ username:username, password:oldPassword});
-        console.log(user);
+        const user = await User.findOne({ username:username.toLowerCase(), password:oldPassword});
         if (!user) {
             return res.status(401).send('User not found');
         }
