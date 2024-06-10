@@ -1,6 +1,7 @@
 const express = require("express");
 const authservice =require("./routes/auth.js");
 const pidservice = require("./routes/sensor.js");
+const dtcservice = require("./routes/dtc.js");
 // by default my mobile application is been blocked by this API
 const cors =  require('cors');
 const dotenv =require("dotenv");
@@ -32,6 +33,8 @@ app.get('/',(req,res)=>{
 app.use('/auth',authservice);
 
 app.use('/sensor',pidservice);
+
+app.use('/dtc',dtcservice);
 
 // Starting server at port 6969
 app.listen(process.env.PORT,()=>{
