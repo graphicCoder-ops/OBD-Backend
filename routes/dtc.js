@@ -4,9 +4,10 @@ const router = app.Router();
 // for web sockets
 const expressWs = require('express-ws');
 expressWs(router);
-router.get("/get", async (req, res) => {
+
+router.get("/get/:username", async (req, res) => {
   try {
-    const userdtc = await UserDTC.findOne({ username: req.body.username });
+    const userdtc = await UserDTC.findOne({ username: req.params.username });
     if (userdtc) {
       res.status(200);
       res.json(userdtc);
