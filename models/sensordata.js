@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const sensorSchema = mongoose.Schema({
     timestamp: { type: Date, default: Date.now },
-    username: {type: String, required: true},
+    username: {type: String, required: true , unique: true},
     RPM: { type: String, required: false },
     SPEED: { type: String, required: false },
     ENGINE_LOAD: { type: String, required: false },
