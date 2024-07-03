@@ -36,7 +36,7 @@ router.post("/register", async (req, res) => {
             console.log(confirmPassword , password)
              res.status(200).send("Registered, " + newUser.username);
        } else {
-          res.status(400).json({ message: "Passwords do not match" });
+          res.status(400).send("Passwords do not match");
          
       }
     } catch (error) {
