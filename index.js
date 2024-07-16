@@ -2,6 +2,7 @@ const express = require("express");
 const authservice =require("./routes/auth.js");
 const pidservice = require("./routes/sensor.js");
 const dtcservice = require("./routes/dtc.js");
+const triggerservice =  require("./routes/speedTrigger.js");
 // by default my mobile application is been blocked by this API
 const cors =  require('cors');
 const dotenv =require("dotenv");
@@ -17,10 +18,7 @@ app.use(cors());
 dotenv.config();
 
 //db connection
-mongoose.connect(process.env.DB_CONNECTION_URL, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-})
+mongoose.connect(process.env.DB_CONNECTION_URL)
 .then(() => console.log('Connected to MongoDB'))
 .catch(err => console.error('Failed to connect to MongoDB', err));
 
@@ -36,6 +34,8 @@ app.use('/auth',authservice);
 app.use('/sensor',pidservice);
 
 app.use('/dtc',dtcservice);
+
+app.use('/speed-trigger',triggerservice);
 
 // Starting server at port 6969
 app.listen(process.env.PORT,()=>{
