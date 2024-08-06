@@ -3,6 +3,7 @@ const authservice =require("./routes/auth.js");
 const pidservice = require("./routes/sensor.js");
 const dtcservice = require("./routes/dtc.js");
 const triggerservice =  require("./routes/speedTrigger.js");
+const carInfo =  require("./routes/carInfo.js");
 const predictservice = require("./routes/predict.js");
 // by default my mobile application is been blocked by this API
 const cors =  require('cors');
@@ -37,6 +38,8 @@ app.use('/sensor',pidservice);
 app.use('/dtc',dtcservice);
 
 app.use('/speed-trigger',triggerservice);
+
+app.use('/carinfo',carInfo);
 
 // Starting server at port 6969
 app.listen(process.env.PORT,()=>{
