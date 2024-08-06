@@ -65,7 +65,7 @@ router.post('/set', async (req,res)=>{
         sensor.save();
         res.status(200).send("Created new Entry!");
       } catch (error) {
-        res.statu(500).send("Couldn't create data");
+        res.status(500).send("Couldn't create data");
       }
         
         
