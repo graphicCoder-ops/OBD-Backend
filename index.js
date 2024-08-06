@@ -31,15 +31,17 @@ app.get('/',(req,res)=>{
     res.send("Landing page works!")
 });
 
-app.use('/auth',authservice);
+app.use('/auth', authservice);
 
-app.use('/sensor',pidservice);
+app.use('/sensor', pidservice);
 
-app.use('/dtc',dtcservice);
+app.use('/dtc', dtcservice);
 
-app.use('/speed-trigger',triggerservice);
+app.use('/speed-trigger', triggerservice);
 
-app.use('/carinfo',carInfo);
+app.use('/predict', predictservice);
+
+app.use('/carinfo', carInfo);
 
 // Starting server at port 6969
 app.listen(process.env.PORT,()=>{

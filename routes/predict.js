@@ -11,7 +11,7 @@ router.post("/co2-emission", (req, res) => {
     const transmission = req.body.transmission;
     const fuelType = req.body.fuelType;
 
-    const python = spawn('python', ['python/main.py', engineSize, cylinders, combined, transmission, fuelType]);
+    const python = spawn('python3', ['python/main.py', engineSize, cylinders, combined, transmission, fuelType]);
 
     python.stdout.on('data', (data) => {
         res.write(data);
