@@ -2,7 +2,7 @@ const app = require("express");
 const axios = require('axios');
 const CarInfo = require("../models/carInfo");
 const router = app.Router();
-const dotenv =require("dotenv");
+const dotenv = require("dotenv");
 
 dotenv.config();
 
@@ -62,8 +62,9 @@ router.put("/updateByVIN/:VIN", async (req, res) => {
     const userVin = await CarInfo.findOne({ VIN:VIN });
     //if not then create new entry and add the info
     if (!userVin) {
-      const response =  await axios.get(process.env.VIN_API)
+      const response = await axios.get(process.env.VIN_API + VIN + '?format=json');
       const carData = response.data;
+      console.log(carData);
       const newVinInfo = new CarInfo({
         username:username,
         ENGINE_SIZE:carData.Results.find(result => result.Variable === 'Displacement (L)').Value,
@@ -80,8 +81,9 @@ router.put("/updateByVIN/:VIN", async (req, res) => {
       
     } else {
       //updating the info based on the VIN from obd
-      const response = await axios.get(process.env.VIN_API);
+      const response = await axios.get(process.env.VIN_API + VIN + '?format=json');
       const carData = response.data;
+      console.log(carData);
        userVin.set({
         username:username,
         ENGINE_SIZE:carData.Results.find(result => result.Variable === 'Displacement (L)').Value,
