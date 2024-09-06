@@ -56,7 +56,6 @@ router.post("/set", async (req, res) => {
 router.put("/updateByVIN/:VIN", async (req, res) => {
   //get the VIN number from obd
   const VIN = req.params.VIN;
-  const{username,ENGINE_SIZE, Cylinders, Transmission, FUEL_TYPE, CAR_YEAR,CAR_MODEL,CAR_COMPANY} = req.body;
   try {
     //check if VIN number exists
     const userVin = await CarInfo.findOne({ VIN:VIN });
@@ -64,12 +63,12 @@ router.put("/updateByVIN/:VIN", async (req, res) => {
     if (!userVin) {
       const response = await axios.get(process.env.VIN_API + VIN + '?format=json');
       const carData = response.data;
-      console.log(carData);
+    
       const newVinInfo = new CarInfo({
-        username:username,
+        username:req.body.username,
         ENGINE_SIZE:carData.Results.find(result => result.Variable === 'Displacement (L)').Value,
-        Cylinders:Cylinders,
-        Transmission:Transmission,
+        Cylinders:carData.Results.find(result => result.Variable === 'Engine Number of Cylinders').Value,
+        Transmission:carData.Results.find(result => result.Variable === 'Transmission Style').Value,
         VIN: VIN,
         FUEL_TYPE: carData.Results.find(result => result.Variable === 'Fuel Type - Primary').Value,
         CAR_YEAR: carData.Results.find(result => result.Variable === 'Model Year').Value,
@@ -83,12 +82,12 @@ router.put("/updateByVIN/:VIN", async (req, res) => {
       //updating the info based on the VIN from obd
       const response = await axios.get(process.env.VIN_API + VIN + '?format=json');
       const carData = response.data;
-      console.log(carData);
+     
        userVin.set({
-        username:username,
+        username:req.body.username,
         ENGINE_SIZE:carData.Results.find(result => result.Variable === 'Displacement (L)').Value,
-        Cylinders:Cylinders,
-        Transmission:Transmission,
+        Cylinders:carData.Results.find(result => result.Variable === 'Engine Number of Cylinders').Value,
+        Transmission:carData.Results.find(result => result.Variable === 'Transmission Style').Value,
         VIN: VIN,
         FUEL_TYPE: carData.Results.find(result => result.Variable === 'Fuel Type - Primary').Value,
         CAR_YEAR: carData.Results.find(result => result.Variable === 'Model Year').Value,
