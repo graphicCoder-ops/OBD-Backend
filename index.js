@@ -5,6 +5,7 @@ const dtcservice = require("./routes/dtc.js");
 const triggerservice =  require("./routes/speedTrigger.js");
 const carInfo =  require("./routes/carInfo.js");
 const predictservice = require("./routes/predict.js");
+const tripservice = require("./routes/trip.js");
 // by default my mobile application is been blocked by this API
 const cors =  require('cors');
 const dotenv =require("dotenv");
@@ -42,6 +43,8 @@ app.use('/speed-trigger', triggerservice);
 app.use('/predict', predictservice);
 
 app.use('/carinfo', carInfo);
+
+app.use('/trip', tripservice);
 
 // Starting server at port 6969
 app.listen(process.env.PORT,()=>{
