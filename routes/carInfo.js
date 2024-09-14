@@ -63,10 +63,11 @@ router.put("/updateByVIN/:VIN", async (req, res) => {
     if (!userVin) {
       const response = await axios.get(process.env.VIN_API + VIN + '?format=json');
       const carData = response.data;
-    
+      
       const newVinInfo = new CarInfo({
         username:req.body.username,
         ENGINE_SIZE:carData.Results.find(result => result.Variable === 'Displacement (L)').Value,
+        Engine_Model:carData.Results.find(result => result.Variable === 'Engine Model').Value,
         Cylinders:carData.Results.find(result => result.Variable === 'Engine Number of Cylinders').Value,
         Transmission:carData.Results.find(result => result.Variable === 'Transmission Style').Value,
         VIN: VIN,
@@ -82,10 +83,11 @@ router.put("/updateByVIN/:VIN", async (req, res) => {
       //updating the info based on the VIN from obd
       const response = await axios.get(process.env.VIN_API + VIN + '?format=json');
       const carData = response.data;
-     
+      
        userVin.set({
         username:req.body.username,
         ENGINE_SIZE:carData.Results.find(result => result.Variable === 'Displacement (L)').Value,
+        Engine_Model:carData.Results.find(result => result.Variable === 'Engine Model').Value,
         Cylinders:carData.Results.find(result => result.Variable === 'Engine Number of Cylinders').Value,
         Transmission:carData.Results.find(result => result.Variable === 'Transmission Style').Value,
         VIN: VIN,
