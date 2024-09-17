@@ -12,6 +12,18 @@ router.post('/add', async (req,res)=>{
     }
 });
 
+
+router.get('/get/:username', async (req,res)=>{
+  try {
+    const trip = await Trip.find({
+      username: req.params.username.toLowerCase()});
+    res.status(200).json(trip); // Return the id in the response for Harsh
+  } catch (error) {
+    res.status(500).send("Couldn't create data : error stacktrace" + error);
+  }
+});
+
+
 router.put('/update/:id', async (req,res)=>{
     // if username doesnt exist create new entry
     let FuelConsumption = req.body.FuelConsumption;
