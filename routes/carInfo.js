@@ -8,6 +8,39 @@ dotenv.config();
 
 
 
+function fuelTypeConvert( FuelType){
+
+  let convertedValue = NaN
+  switch(FuelType) {
+    case "Gasoline":
+      convertedValue = "X"
+      console.log(convertedValue)
+      break;
+      case "Premium Gasoline":
+        convertedValue = "Z"
+        console.log(convertedValue)
+        break;
+      case "Diesel":
+        convertedValue = "D"
+        console.log(convertedValue)
+        break;
+      case "E85":
+         convertedValue = "E"
+        break;
+      case "Electricity":
+        convertedValue = "B"
+        break;
+      case "Natural Gas":
+        convertedValue = "N"
+        break;
+      default:
+        convertedValue = "X"
+      break;
+  }
+   return convertedValue;
+}
+
+
 //get car information from the username
 router.get("/get/:username", async (req, res) => {
   try {
@@ -71,10 +104,11 @@ router.put("/updateByVIN/:VIN", async (req, res) => {
         Cylinders:carData.Results.find(result => result.Variable === 'Engine Number of Cylinders').Value,
         Transmission:carData.Results.find(result => result.Variable === 'Transmission Style').Value,
         VIN: VIN,
-        FUEL_TYPE: carData.Results.find(result => result.Variable === 'Fuel Type - Primary').Value,
+        //FUEL_TYPE: carData.Results.find(result => result.Variable === 'Fuel Type - Primary').Value,
         CAR_YEAR: carData.Results.find(result => result.Variable === 'Model Year').Value,
         CAR_MODEL: carData.Results.find(result => result.Variable === 'Model').Value,
-        CAR_COMPANY:carData.Results.find(result => result.Variable === 'Make').Value
+        CAR_COMPANY:carData.Results.find(result => result.Variable === 'Make').Value,
+        FUEL_TYPE:fuelTypeConvert(carData.Results.find(result => result.Variable === 'Fuel Type - Primary').Value)
       });
       await newVinInfo.save();
       return res.status(200).send("added new information");
@@ -84,6 +118,7 @@ router.put("/updateByVIN/:VIN", async (req, res) => {
       const response = await axios.get(process.env.VIN_API + VIN + '?format=json');
       const carData = response.data;
       
+      
        userVin.set({
         username:req.body.username,
         ENGINE_SIZE:carData.Results.find(result => result.Variable === 'Displacement (L)').Value,
@@ -91,10 +126,11 @@ router.put("/updateByVIN/:VIN", async (req, res) => {
         Cylinders:carData.Results.find(result => result.Variable === 'Engine Number of Cylinders').Value,
         Transmission:carData.Results.find(result => result.Variable === 'Transmission Style').Value,
         VIN: VIN,
-        FUEL_TYPE: carData.Results.find(result => result.Variable === 'Fuel Type - Primary').Value,
+        //FUEL_TYPE: carData.Results.find(result => result.Variable === 'Fuel Type - Primary').Value,
         CAR_YEAR: carData.Results.find(result => result.Variable === 'Model Year').Value,
         CAR_MODEL: carData.Results.find(result => result.Variable === 'Model').Value,
-        CAR_COMPANY:carData.Results.find(result => result.Variable === 'Make').Value
+        CAR_COMPANY:carData.Results.find(result => result.Variable === 'Make').Value,
+        FUEL_TYPE:fuelTypeConvert(carData.Results.find(result => result.Variable === 'Fuel Type - Primary').Value)
       });
       await userVin.save();
       return res.status(200).send("Updated existing information");
