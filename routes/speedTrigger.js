@@ -4,7 +4,7 @@ const router = app.Router();
 
 router.get('/get/:username', async (req,res)=>{
     try{
-    const triggerValues = await SpeedTrigger.find({ username: req.params.username });
+    const triggerValues = await SpeedTrigger.find({ username: req.params.username }).sort({ timestamp: -1 });
     if(triggerValues.length != 0 ){
         console.log(triggerValues);
         res.status(200).json(triggerValues);

@@ -14,11 +14,34 @@ router.post('/add', async (req,res)=>{
     }
 });
 
+router.get('/getStats/:username', async (req,res) => {
+  try {
+    const result = await Trip.aggregate([
+      { $match: { username: req.params.username } }, // Filter by username
+      {
+        $group: {
+          _id: {
+            month: { $month: "$Date" },  // Group by month
+            year: { $year: "$Date" }     // Group by year to avoid mixing months from different years
+          },
+          totalFuelConsumption: { $sum: "$FuelConsumption" }, // Sum FuelConsumption
+          totalDistanceTravelled: { $sum: "$DistanceTravelled" } // Sum DistanceTravelled
+        }
+      },
+      { $sort: { "_id.year": 1, "_id.month": 1 } } // Sort by year and month
+    ]);
+
+    res.status(200).json(result);
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+});
 
 router.get('/get/:username', async (req,res)=>{
   try {
     const trip = await Trip.find({
-      username: req.params.username.toLowerCase()});
+      username: req.params.username.toLowerCase()}).sort({ Date: -1 });;
     res.status(200).json(trip); // Return the id in the response for Harsh
   } catch (error) {
     res.status(500).send("Couldn't create data : error stacktrace" + error);
@@ -35,7 +58,7 @@ router.put('/update/:id', async (req,res)=>{
       const updateTrip = await Trip.findById(req.params.id);
       const carInfo =  await CarInfo.findOne({username: updateTrip.username});
       FuelConsumption = FuelConsumption * carInfo.FUEL_CAPACITY;
-      
+
       if (!updateTrip) {
         return res.status(401).send("Trip not Found");
       } else {
