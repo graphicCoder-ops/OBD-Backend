@@ -1,6 +1,8 @@
 const app = require("express");
 const router = app.Router();
 const Trip = require("../models/trip");
+const CarInfo = require("../models/carInfo");
+const carInfo = require("../models/carInfo");
 
 router.post('/add', async (req,res)=>{
     try {
@@ -28,8 +30,12 @@ router.put('/update/:id', async (req,res)=>{
     // if username doesnt exist create new entry
     let FuelConsumption = req.body.FuelConsumption;
     let DistanceTravelled =  req.body.DistanceTravelled;
+    
     try {
       const updateTrip = await Trip.findById(req.params.id);
+      const carInfo =  await CarInfo.findOne({username: updateTrip.username});
+      FuelConsumption = FuelConsumption * carInfo.FUEL_CAPACITY;
+      
       if (!updateTrip) {
         return res.status(401).send("Trip not Found");
       } else {

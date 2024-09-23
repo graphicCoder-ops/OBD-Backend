@@ -11,6 +11,7 @@ const carInfoSchema = mongoose.Schema({
     CAR_YEAR: {type: String },
     CAR_MODEL: {type: String },
     CAR_COMPANY: {type: String },
+    FUEL_CAPACITY: {type: Number}
 });
 
 module.exports = mongoose.model('CarInfo', carInfoSchema);
