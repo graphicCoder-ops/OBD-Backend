@@ -1,5 +1,6 @@
 const app = require("express");
 const sensordata = require("../models/sensordata");
+const priority_pid = require("../models/pid");
 const router = app.Router();
 
 //const SensorData = require('../models/sensordata');
@@ -43,6 +44,17 @@ router.get("/get/:username", async (req, res) => {
   });
 
 
+router.get("/priority_commands/:username", async (req, res) => {
+  const commands = await priority_pid.findOne({username: req.params.username});
+
+  if(commands){
+    res.status(200).json(commands);
+  }else{
+    res.status(404).send("user doesn't exist!");
+  }
+
+});
+
 router.post('/set', async (req,res)=>{
     
     // if username exists update all data
@@ -62,6 +74,8 @@ router.post('/set', async (req,res)=>{
       // if username doesnt exist create new entry
       try {
         const sensor = await sensordata(req.body);
+        const initialize_pid = await priority_pid({username:req.body.username});
+        initialize_pid.save();
         sensor.save();
         res.status(200).send("Created new Entry!");
       } catch (error) {
