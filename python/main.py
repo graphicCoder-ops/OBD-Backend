@@ -66,4 +66,4 @@ else:
 
 # Making predictions
 predicted_emissions = model.predict(new_data)
-print(f"Predicted CO2 emissions: {predicted_emissions[0]:.2f} g/km")
+print(f"{predicted_emissions[0]:.2f}")
