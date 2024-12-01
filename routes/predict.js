@@ -14,7 +14,7 @@ const predictEmissions = (data) => {
         const transmission = data.transmission;
         const fuelType = data.fuelType;
 
-        const python = spawn('python3', ['python/main.py', engineSize, cylinders, combined, transmission, fuelType]);
+        const python = spawn('python', ['python/main.py', engineSize, cylinders, combined, transmission.toUpperCase(), fuelType]);
 
         let output = '';
 
